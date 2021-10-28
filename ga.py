@@ -63,6 +63,7 @@ class Individual_Grid(object):
         return self._fitness
 
     # Mutate a genome into a new genome.  Note that this is a _genome_, not an individual!
+    # what is supposed to be passed in for genome here?
     def mutate(self, genome):
         # STUDENT implement a mutation operator, also consider not mutating this individual
         # STUDENT also consider weighting the different tile types so it's not uniformly random
@@ -110,9 +111,11 @@ class Individual_Grid(object):
         right = width - 1
         for y in range(height):
             for x in range(left, right):
-                # STUDENT Which one should you take?  Self, or other?  Why?
-                # STUDENT consider putting more constraints on this to prevent pipes in the air, etc
-                new_genome[x][y] = self[x][y]
+                # choose the "Best" trait of each pair from parents
+                parentOneGenome = self.genome[x][y]
+                parentTwoGenome = other.genome[x][y]
+                #compare the two genomes and choose somehow idk
+                #could be random
         # do mutation; note we're returning a one-element tuple here
         return (Individual_Grid(new_genome),)
 
