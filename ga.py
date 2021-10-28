@@ -72,6 +72,32 @@ class Individual_Grid(object):
         right = width - 1
         for y in range(height):
             for x in range(left, right):
+                chance = random.randint(0,100)
+                # slightly change block. different chance based on what it is
+                # eg less chance if current block is air
+                if self[x][y] == '-' and chance > 95:
+                    #mutate this
+                    pass
+                if self[x][y] == 'X' and chance > 90:
+                    #mutate this
+                    pass
+                if self[x][y] == '?' and chance > 98:
+                    #mutate this
+                    pass
+                if self[x][y] == 'M' and chance > 99:
+                    #mutate this
+                    pass
+                if self[x][y] == 'B' and chance > 90:
+                    #mutate this
+                    pass
+                if self[x][y] == 'o' and chance > 50:
+                    #mutate this
+                    pass
+                # If placing a pipe segment treat as one objec
+                # Mutate pipe segment all the way down
+                if self[x][y] == 'T' and chance > 90:
+                    #mutate this
+                    pass
                 pass
         return genome
 
@@ -86,7 +112,7 @@ class Individual_Grid(object):
             for x in range(left, right):
                 # STUDENT Which one should you take?  Self, or other?  Why?
                 # STUDENT consider putting more constraints on this to prevent pipes in the air, etc
-                pass
+                new_genome[x][y] = self[x][y]
         # do mutation; note we're returning a one-element tuple here
         return (Individual_Grid(new_genome),)
 
