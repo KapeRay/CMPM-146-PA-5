@@ -73,32 +73,38 @@ class Individual_Grid(object):
         right = width - 1
         for y in range(height):
             for x in range(left, right):
-                chance = random.randint(0,100)
+                chance = random.randint(1,100)
                 # slightly change block. different chance based on what it is
                 # eg less chance if current block is air
                 if self[x][y] == '-' and chance > 95:
+                    otherChance = random.randint(1, 6)
                     #mutate this
-                    pass
-                if self[x][y] == 'X' and chance > 90:
+                    continue
+                elif self[x][y] == 'X' and chance > 90:
+                    otherChance = random.randint(1, 6)
                     #mutate this
-                    pass
-                if self[x][y] == '?' and chance > 98:
+                    continue
+                elif self[x][y] == '?' and chance > 98:
+                    otherChance = random.randint(1, 6)
                     #mutate this
-                    pass
-                if self[x][y] == 'M' and chance > 99:
+                    continue
+                elif self[x][y] == 'M' and chance > 99:
+                    otherChance = random.randint(1, 6)
                     #mutate this
-                    pass
-                if self[x][y] == 'B' and chance > 90:
+                    continue
+                elif self[x][y] == 'B' and chance > 90:
+                    otherChance = random.randint(1, 6)
                     #mutate this
-                    pass
-                if self[x][y] == 'o' and chance > 50:
+                    continue
+                elif self[x][y] == 'o' and chance > 50:
+                    otherChance = random.randint(1, 6)
                     #mutate this
-                    pass
-                # If placing a pipe segment treat as one objec
-                # Mutate pipe segment all the way down
-                if self[x][y] == 'T' and chance > 90:
-                    #mutate this
-                    pass
+                    continue
+                # If placing a pipe segment treat as one object
+                elif self[x][y] == 'T' and chance > 90:
+                    #mutate this all the way down
+                    continue
+                genome[x][y] = self[x][y]
                 pass
         return genome
 
