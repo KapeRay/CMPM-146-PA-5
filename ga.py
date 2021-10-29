@@ -74,36 +74,49 @@ class Individual_Grid(object):
         for y in range(height):
             for x in range(left, right):
                 chance = random.randint(1,100)
+                otherChance = 0
                 # slightly change block. different chance based on what it is
                 # eg less chance if current block is air
                 if self[x][y] == '-' and chance > 95:
                     otherChance = random.randint(1, 6)
-                    #mutate this
-                    continue
                 elif self[x][y] == 'X' and chance > 90:
                     otherChance = random.randint(1, 6)
-                    #mutate this
-                    continue
                 elif self[x][y] == '?' and chance > 98:
                     otherChance = random.randint(1, 6)
-                    #mutate this
-                    continue
                 elif self[x][y] == 'M' and chance > 99:
                     otherChance = random.randint(1, 6)
-                    #mutate this
-                    continue
                 elif self[x][y] == 'B' and chance > 90:
                     otherChance = random.randint(1, 6)
-                    #mutate this
-                    continue
                 elif self[x][y] == 'o' and chance > 50:
                     otherChance = random.randint(1, 6)
-                    #mutate this
+                if otherChance == 0:
+                    genome[x][y] = '-'
+                    continue
+                elif otherChance == 1:
+                    genome[x][y] = 'X'
+                    continue
+                elif otherChance == 2:
+                    genome[x][y] = '?'
+                    continue
+                elif otherChance == 3:
+                    genome[x][y] = 'M'
+                    continue
+                elif otherChance == 4:
+                    genome[x][y] = 'B'
+                    continue
+                elif otherChance == 5:
+                    genome[x][y] = '0'
+                    continue
+                elif otherChance == 6:
+                    genome[x][y] = '-'
                     continue
                 # If placing a pipe segment treat as one object
                 elif self[x][y] == 'T' and chance > 90:
                     #mutate this all the way down
+                    otherChance = random.randint(1, 6)
+
                     continue
+
                 genome[x][y] = self[x][y]
                 pass
         return genome
