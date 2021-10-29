@@ -105,19 +105,40 @@ class Individual_Grid(object):
     # Create zero or more children from self and other
     def generate_children(self, other):
         new_genome = copy.deepcopy(self.genome)
+        brother_genome = copy.deepcopy(other.genome)
         # Leaving first and last columns alone...
         # do crossover with other
         left = 1
         right = width - 1
+        midpoint = random.randint(left, right)
+        point = []
+        point1 = midpoint
+        point2 = midpoint
+        point3 = midpoint
+        point.append(point1)
+        point.append(point2)
+        point.append(point3)
+        
         for y in range(height):
-            for x in range(left, right):
-                # choose the "Best" trait of each pair from parents
-                parentOneGenome = self.genome[x][y]
-                parentTwoGenome = other.genome[x][y]
-                #compare the two genomes and choose somehow idk
+            for x in range(midpoint):
+                # choose the "Best" trait of each pair from left or right parents
+                #compare the two genomes and choose using multi point crossover
+                # from left to point1, new_genome stays the same and brother_genome takes other
+                if x in range(left, point[0]):
+                    brother_genome[y][x] = other.genome[y][x]
+                # from point1 to point2, new_genome takes other and brother_genome stays the same
+                elif x in range(point[0], point[1]):
+                    new_genome[y][x] = other.genome[y][x]
+                # from point2 to point3, new_genome stays the same and brother_genome takes other
+                elif x in range(point[1], point[2]):
+                    brother_genome[y][x] = other.genome[y][x]
+                # from point3 to right, new_genome takes other and brother_genome stays the same
+                elif x in range(point[2], right):
+                    new_genome[y][x] = other.genome[y][x]
+                
                 #could be random
         # do mutation; note we're returning a one-element tuple here
-        return (Individual_Grid(new_genome),)
+        return (Individual_Grid(self.mutate(new_genome)),)
 
     # Turn the genome into a level string (easy for this genome)
     def to_level(self):
