@@ -68,57 +68,207 @@ class Individual_Grid(object):
         # STUDENT implement a mutation operator, also consider not mutating this individual
         # STUDENT also consider weighting the different tile types so it's not uniformly random
         # STUDENT consider putting more constraints on this to prevent pipes in the air, etc
-
+        # slightly change block. different chance based on what it is
+        # eg less chance if current block is air
         left = 1
         right = width - 1
         for y in range(height):
             for x in range(left, right):
                 chance = random.randint(1,100)
-                otherChance = 0
-                # slightly change block. different chance based on what it is
-                # eg less chance if current block is air
-                if genome[y][x] == '-' and chance > 95:
-                    otherChance = random.randint(1, 6)
-                elif genome[y][x] == 'X' and chance > 90:
-                    otherChance = random.randint(1, 6)
-                elif genome[y][x] == '?' and chance > 98:
-                    otherChance = random.randint(1, 6)
-                elif genome[y][x] == 'M' and chance > 99:
-                    otherChance = random.randint(1, 6)
-                elif genome[y][x] == 'B' and chance > 90:
-                    otherChance = random.randint(1, 6)
-                elif genome[y][x] == 'o' and chance > 50:
-                    otherChance = random.randint(1, 6)
-                if otherChance == 0:
-                    genome[y][x] = '-'
-                    continue
-                elif otherChance == 1:
-                    genome[y][x] = 'X'
-                    continue
-                elif otherChance == 2:
-                    genome[y][x] = '?'
-                    continue
-                elif otherChance == 3:
-                    genome[y][x] = 'M'
-                    continue
-                elif otherChance == 4:
-                    genome[y][x] = 'B'
-                    continue
-                elif otherChance == 5:
-                    genome[y][x] = '0'
-                    continue
-                elif otherChance == 6:
-                    genome[y][x] = '-'
-                    continue
+                otherChance = random.randint(1, 100)
+                #changing empty space
+                if self.genome[y][x] == '-' and chance > 95:
+                    if otherChance < 5:
+                        genome[y][x] = 'X'
+                    elif otherChance < 15:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = 'B'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = 'o'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'E'
+                        continue
+                    else:
+                        #pipes all the way down "|"
+                        genome[y][x] = 'T'
+                        continue
+                # Changing solid wall
+                elif self.genome[y][x] == 'X' and chance > 90:
+                    if otherChance < 5:
+                        genome[y][x] = 'E'
+                        continue
+                    elif otherChance < 15:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = '-'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'o'
+                        continue
+                    else:
+                        #pipes all the way down
+                        genome[y][x] = 'T'
+                        continue
+                # Changing coin block
+                elif self.genome[y][x] == '?' and chance > 98:
+                    if otherChance < 5:
+                        genome[y][x] = 'E'
+                        continue
+                    elif otherChance < 15:
+                        genome[y][x] = '-'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = 'X'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'o'
+                        continue
+                    else:
+                        #pipes all the way down
+                        genome[y][x] = 'T'
+                        continue
+                # Changing mushroom block
+                elif self.genome[y][x] == 'M' and chance > 99:
+                    if otherChance < 5:
+                        genome[y][x] = 'E'
+                        continue
+                    elif otherChance < 15:
+                        genome[y][x] = 'X'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = '-'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'o'
+                        continue
+                    else:
+                        #pipes all the way down
+                        genome[y][x] = 'T'
+                        continue
+                #Changing breakable block
+                elif self.genome[y][x] == 'B' and chance > 90:
+                    if otherChance < 5:
+                        genome[y][x] = 'E'
+                        continue
+                    elif otherChance < 15:
+                        genome[y][x] = 'X'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = 'o'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = '-'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'M'
+                        continue
+                    else:
+                        #pipes all the way down
+                        genome[y][x] = 'T'
+                        continue
+                #Changing coin
+                elif self.genome[y][x] == 'o' and chance > 50:
+                    if otherChance < 5:
+                        genome[y][x] = 'E'
+                        continue
+                    elif otherChance < 15:
+                        genome[y][x] = 'X'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = '-'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'o'
+                        continue
+                    else:
+                        #pipes all the way down
+                        genome[y][x] = 'T'
+                        continue
+                #Changing enemy
+                elif self.genome[y][x] == 'E' and chance > 50:
+                    if otherChance < 5:
+                        genome[y][x] = '-'
+                        continue
+                    elif otherChance < 15:
+                        genome[y][x] = 'X'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = 'B'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'o'
+                        continue
+                    else:
+                        #pipes all the way down
+                        genome[y][x] = 'T'
+                        continue
                 # If placing a pipe segment treat as one object
-                """elif self[x][y] == 'T' and chance > 90:
+                elif self.genome[y][x] == 'T' and chance > 90:
                     #mutate this all the way down
-                    otherChance = random.randint(1, 6)
-
-                    continue
-
-                genome[x][y] = self[x][y]
-                pass"""
+                    if otherChance < 5:
+                        genome[y][x] = 'E'
+                        continue
+                    elif otherChance < 15:
+                        genome[y][x] = 'X'
+                        continue
+                    elif otherChance < 30:
+                        genome[y][x] = '?'
+                        continue
+                    elif otherChance < 50:
+                        genome[y][x] = 'M'
+                        continue
+                    elif otherChance < 75:
+                        genome[y][x] = '-'
+                        continue
+                    elif otherChance < 98:
+                        genome[y][x] = 'o'
+                        continue
+                    else:
+                        #pipes all the way down
+                        genome[y][x] = 'B'
+                        continue
+                pass
         return genome
 
     # Create zero or more children from self and other
