@@ -77,48 +77,48 @@ class Individual_Grid(object):
                 otherChance = 0
                 # slightly change block. different chance based on what it is
                 # eg less chance if current block is air
-                if self[x][y] == '-' and chance > 95:
+                if genome[y][x] == '-' and chance > 95:
                     otherChance = random.randint(1, 6)
-                elif self[x][y] == 'X' and chance > 90:
+                elif genome[y][x] == 'X' and chance > 90:
                     otherChance = random.randint(1, 6)
-                elif self[x][y] == '?' and chance > 98:
+                elif genome[y][x] == '?' and chance > 98:
                     otherChance = random.randint(1, 6)
-                elif self[x][y] == 'M' and chance > 99:
+                elif genome[y][x] == 'M' and chance > 99:
                     otherChance = random.randint(1, 6)
-                elif self[x][y] == 'B' and chance > 90:
+                elif genome[y][x] == 'B' and chance > 90:
                     otherChance = random.randint(1, 6)
-                elif self[x][y] == 'o' and chance > 50:
+                elif genome[y][x] == 'o' and chance > 50:
                     otherChance = random.randint(1, 6)
                 if otherChance == 0:
-                    genome[x][y] = '-'
+                    genome[y][x] = '-'
                     continue
                 elif otherChance == 1:
-                    genome[x][y] = 'X'
+                    genome[y][x] = 'X'
                     continue
                 elif otherChance == 2:
-                    genome[x][y] = '?'
+                    genome[y][x] = '?'
                     continue
                 elif otherChance == 3:
-                    genome[x][y] = 'M'
+                    genome[y][x] = 'M'
                     continue
                 elif otherChance == 4:
-                    genome[x][y] = 'B'
+                    genome[y][x] = 'B'
                     continue
                 elif otherChance == 5:
-                    genome[x][y] = '0'
+                    genome[y][x] = '0'
                     continue
                 elif otherChance == 6:
-                    genome[x][y] = '-'
+                    genome[y][x] = '-'
                     continue
                 # If placing a pipe segment treat as one object
-                elif self[x][y] == 'T' and chance > 90:
+                """elif self[x][y] == 'T' and chance > 90:
                     #mutate this all the way down
                     otherChance = random.randint(1, 6)
 
                     continue
 
                 genome[x][y] = self[x][y]
-                pass
+                pass"""
         return genome
 
     # Create zero or more children from self and other
@@ -129,17 +129,17 @@ class Individual_Grid(object):
         # do crossover with other
         left = 1
         right = width - 1
-        midpoint = random.randint(left, right)
+        
         point = []
-        point1 = midpoint
-        point2 = midpoint
-        point3 = midpoint
+        point1 = random.randint(left, right)
+        point2 = random.randint(left, right)
+        point3 = random.randint(left, right)
         point.append(point1)
         point.append(point2)
         point.append(point3)
         
         for y in range(height):
-            for x in range(midpoint):
+            for x in range(width):
                 # choose the "Best" trait of each pair from left or right parents
                 #compare the two genomes and choose using multi point crossover
                 # from left to point1, new_genome stays the same and brother_genome takes other
@@ -157,6 +157,7 @@ class Individual_Grid(object):
                 
                 #could be random
         # do mutation; note we're returning a one-element tuple here
+        #print('is the problem here')
         return (Individual_Grid(self.mutate(new_genome)),)
 
     # Turn the genome into a level string (easy for this genome)
@@ -330,8 +331,14 @@ class Individual_DE(object):
 
     def generate_children(self, other):
         # STUDENT How does this work?  Explain it in your writeup.
-        pa = random.randint(0, len(self.genome) - 1)
-        pb = random.randint(0, len(other.genome) - 1)
+        if len(self.genome) > 0:
+            pa = random.randint(0, len(self.genome) - 1)
+        else:
+            pa = 0
+        if len(self.genome) > 0:
+            pb = random.randint(0, len(other.genome) - 1)
+        else:
+            pb = 0
         a_part = self.genome[:pa] if len(self.genome) > 0 else []
         b_part = other.genome[pb:] if len(other.genome) > 0 else []
         ga = a_part + b_part
@@ -410,11 +417,25 @@ class Individual_DE(object):
 
 
 Individual = Individual_Grid
+#Individual = Individual_DE
 
 
 def generate_successors(population):
     results = []
+    
     # STUDENT Design and implement this
+    # roulette wheel selection 
+    fitness_sum = 0
+    for members in population:
+        fitness_sum += members._fitness
+    while len(results) < len(population):
+        select = random.random() * fitness_sum
+        for parents in population:
+            select -= parents._fitness
+            if(select < 0):
+                children = parents.generate_children(parents)
+                results.append(children[0] or [1])
+                break
     # Hint: Call generate_children() on some individuals and fill up results.
     return results
 
