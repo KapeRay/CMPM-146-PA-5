@@ -45,7 +45,9 @@ class Individual_Grid(object):
         # Default fitness function: Just some arbitrary combination of a few criteria.  Is it good?  Who knows?
         # STUDENT Modify this, and possibly add more metrics.  You can replace this with whatever code you like.
         coefficients = dict(
-            meaningfulJumpVariance=0.5,
+            meaningfulJumpVariance=1,
+            meaningfulJumps=1,
+            jumps=1,
             negativeSpace=0.6,
             pathPercentage=0.5,
             emptyPercentage=0.6,
@@ -378,7 +380,9 @@ class Individual_DE(object):
         # STUDENT Add more metrics?
         # STUDENT Improve this with any code you like
         coefficients = dict(
-            meaningfulJumpVariance=0.5,
+            meaningfulJumpVariance=1,
+            meaningfulJumps=1,
+            jumps=1,
             negativeSpace=0.6,
             pathPercentage=0.5,
             emptyPercentage=0.6,
@@ -389,6 +393,10 @@ class Individual_DE(object):
         # STUDENT For example, too many stairs are unaesthetic.  Let's penalize that
         if len(list(filter(lambda de: de[1] == "6_stairs", self.genome))) > 5:
             penalties -= 2
+        if len(list(filter(lambda de: de[1] == "0_hole", self.genome))) > 4:
+            penalties += 1
+        if len(list(filter(lambda de: de[1] == "7_pipe", self.genome))) > 8:
+            penalties -= 3
         # STUDENT If you go for the FI-2POP extra credit, you can put constraint calculation in here too and cache it in a new entry in __slots__.
         self._fitness = sum(map(lambda m: coefficients[m] * measurements[m],
                                 coefficients)) + penalties
@@ -571,43 +579,56 @@ Individual = Individual_Grid
 
 
 def generate_successors(population):
-    results = []
-    
-    # STUDENT Design and implement this
+    winners = []
+    rounds = 50
+    contestants = []
+    probability = 0.5
 
+    for x in range(0, rounds-1):
+        sample_size = 6
+        selection = random.sample(population, sample_size)
+        #shuffle based on fitness
+        for i in range(0, len(selection)):
+            # proportional selection based on fitness
+            randChance = random.random()
+            if randChance < probability*(1-probability)**i:
+                winners.append(selection[i])
+            pass
+    return winners
     #50% chance to do tournament or roulette wheel selection
     # roulette wheel selection
-    """fitness_sum = 0
-    for members in population:
-        fitness_sum += members._fitness
-    while len(results) < len(population):
-        select = random.random() * fitness_sum
-        for parents in population:
-            select -= parents._fitness
-            if(select < 0):
-                children = parents.generate_children(parents)
-                results.append(children[0] or [1])
-                break"""
-    # Tournament Selection
-    winners = []
-    random.shuffle(population)
-    for i in range(0, math.floor(len(population)/2) - 1):
-        player1 = population[i*2]
-        player2 = population[i*2+1]
-        if player1._fitness > player2._fitness:
-            winners.append(player1)
-        else:
-            winners.append(player2)
+    #
+    # fitness_sum = 0
+    # for members in population:
+    #     fitness_sum += members._fitness
+    # while len(results) < len(population):
+    #     select = random.random() * fitness_sum
+    #     for parents in population:
+    #         select -= parents._fitness
+    #         if(select < 0):
+    #             children = parents.generate_children(parents)
+    #             results.append(children[0] or [1])
+    #             break
+    # random.shuffle(population)
+    # for members in population:
 
-    for j in range(0, math.floor(len(winners)/2) - 1):
-        parent1 = winners[j*2]
-        parent2 = winners[j*2 + 1]
-        results.append(parent1.generate_children(parent2)[0])
-        # results.append(parent2.generate_children(parent1)[0])
-    print("Successors: ", results)
+    # for i in range(0, math.floor(len(population)/2) - 1):
+    #     player1 = population[i*2]
+    #     player2 = population[i*2+1]
+    #     if player2 is None:
+    #         continue
+    #     if player1._fitness > player2._fitness:
+    #         winners.append(player1)
+    #     else:
+    #         winners.append(player2)
+    #
+    # for j in range(0, math.floor(len(winners)/2) - 1):
+    #     parent1 = winners[j*2]
+    #     parent2 = winners[j*2 + 1]
+    #     results.append(parent1.generate_children(parent2)[0])
+    #     # results.append(parent2.generate_children(parent1)[0])
+    # print("Successors: ", results)
     # Hint: Call generate_children() on some individuals and fill up results.
-    return results
-
 
 def ga():
     # STUDENT Feel free to play with this parameter
