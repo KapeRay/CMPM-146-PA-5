@@ -74,10 +74,10 @@ class Individual_Grid(object):
         right = width - 1
         for y in range(height):
             for x in range(left, right):
-                chance = random.randint(1,100)
+                chance = random.randint(1,1000)
                 otherChance = random.randint(1, 100)
                 #changing empty space
-                if self.genome[y][x] == '-' and chance > 95:
+                if self.genome[y][x] == '-' and chance > 999:
                     if otherChance < 5:
                         genome[y][x] = 'X'
                     elif otherChance < 15:
@@ -100,7 +100,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 # Changing solid wall
-                elif self.genome[y][x] == 'X' and chance > 99:
+                elif self.genome[y][x] == 'X' and chance > 999:
                     if otherChance < 5:
                         genome[y][x] = 'E'
                         continue
@@ -124,7 +124,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 # Changing coin block
-                elif self.genome[y][x] == '?' and chance > 98:
+                elif self.genome[y][x] == '?' and chance > 998:
                     if otherChance < 5:
                         genome[y][x] = 'E'
                         continue
@@ -148,7 +148,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 # Changing mushroom block
-                elif self.genome[y][x] == 'M' and chance > 99:
+                elif self.genome[y][x] == 'M' and chance > 999:
                     if otherChance < 5:
                         genome[y][x] = 'E'
                         continue
@@ -172,7 +172,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 #Changing breakable block
-                elif self.genome[y][x] == 'B' and chance > 99:
+                elif self.genome[y][x] == 'B' and chance > 999:
                     if otherChance < 5:
                         genome[y][x] = 'E'
                         continue
@@ -196,7 +196,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 #Changing coin
-                elif self.genome[y][x] == 'o' and chance > 99:
+                elif self.genome[y][x] == 'o' and chance > 999:
                     if otherChance < 5:
                         genome[y][x] = 'E'
                         continue
@@ -220,7 +220,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 #Changing enemy
-                elif self.genome[y][x] == 'E' and chance > 99:
+                elif self.genome[y][x] == 'E' and chance > 999:
                     if otherChance < 5:
                         genome[y][x] = '-'
                         continue
@@ -244,7 +244,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 # If placing a pipe segment treat as one object
-                elif self.genome[y][x] == 'T' and chance > 99:
+                elif self.genome[y][x] == 'T' and chance > 999:
                     #mutate this all the way down
                     if otherChance < 5:
                         genome[y][x] = 'E'
