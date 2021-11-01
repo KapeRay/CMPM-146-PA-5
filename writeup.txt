@@ -1,0 +1,89 @@
+Project done by Naman Bhushan and Juan Alvarado
+
+===============================================================================================================================
+Individual Grid
+
+Fitness
+-------------------------------
+Just modified the coefficient to focus on platforming so we added jumps and upped meaningfulJumpVariance
+to 1
+
+Mutate Grid
+-------------------------------
+
+
+
+Crossover For Generate Children
+-------------------------------
+The crossover used is 3 point crossover and it returns one mutated child. 
+
+First, it copies over self.genome into new_genome
+
+After grabbing 3 points and ordering them, the code then loops through each x and y in self.genome. 
+From there, depending on the x value it will either keep
+the self.genome or copy over it with other.genome.
+
+For new_genome, it will be the same from the left most value to the first point. After, it will take on the values of others
+until it reaches the second point. Continuing, it then takes on the values of self until it reaches the third point. After 
+reaching the third point, it will copy the rest of other until it reaches the end.
+
+After copying it over, the code will then return a mutated child.
+
+==================================================================================================================================
+Individual_DE
+
+Fitness
+-------------------------------
+Just modified the coefficient to focus on platforming so we added jumps and upped meaningfulJumpVariance
+to 1 also added some penalties if they are way too many pipes and holes
+
+DE Mutate
+-------------------------------
+The mutation rate for mutate in the DE is 10%. If that 10% is taken and the len(new_genome) is > 0, 
+it takes a block to change from choosing from 0 to the len(new_genome) - 1.
+
+From there, it takes the the information of the block and what type it is. Depending on what block type, it will change
+how the block can be edited.
+
+what the if statements are:
+If the block is a 4_block, it can either be moved horizontally, vertically, or changes if it's breakable or not.
+
+If the block is a 5_qblock, it can be moved like 4_block, or change if it has a power up or not.
+
+If the block is a 3_coin, it can be moved like 4_block.
+
+If the block is a 7_pipe, it can be moved horizontally or the height is changed.
+
+If the block is a 0_hole, it be moved horizontally or have its width changed.
+
+If the block is a 6_stairs, it can be moved horizontally, have its height changed, or have the direction changed.
+
+If the block is a 1_platform, it can either be moved horizontally, vertically, made wider, or change what the platform is made of.
+
+If the block is a 2_enemy, nothing changes.
+
+After that, it removes the block that's there and adds the modified one in and returns the genome.
+
+DE Crossover
+-------------------------------
+It first takes 2 points, one between the length of self.genome and the other between 0 and the length of other.genome.
+
+This is basically 1 point crossover that happens twice. The taken points split the genomes, with
+ga returning the first half of self.genome and the second half of other.genome. The other halves are taken by gb,
+with it returning the first half of other.genome and the second half of self.genome.
+
+==================================================================================================================================
+Selection Strategies
+
+roulette wheel selection
+--------------------------------
+This was accomplished by generating a sum of all _fitness values in the population,
+choosing a random number between zero and that,
+and then subtracting each individual's _fitness from that until it dips below zero.
+This method gives each individual a chance to be selected
+
+Tournament Selection
+--------------------------------
+
+
+
