@@ -574,8 +574,10 @@ def generate_successors(population):
     results = []
     
     # STUDENT Design and implement this
-    # roulette wheel selection 
-    fitness_sum = 0
+
+    #50% chance to do tournament or roulette wheel selection
+    # roulette wheel selection
+    """fitness_sum = 0
     for members in population:
         fitness_sum += members._fitness
     while len(results) < len(population):
@@ -585,7 +587,23 @@ def generate_successors(population):
             if(select < 0):
                 children = parents.generate_children(parents)
                 results.append(children[0] or [1])
-                break
+                break"""
+    # Tournament Selection
+    winners = []
+    random.shuffle(population)
+    for i in range(0, len(population) - 1):
+        player1 = population[i]
+        player2 = population[i+1]
+        if player1._fitness > player2._fitness:
+            winners.append(player1)
+        else:
+            winners.append(player2)
+
+    for child in range(0, len(winners) - 1):
+        parent1 = winners[child]
+        parent2 = winners[child + 1]
+        results.append(parent1.generate_children(parent2)[0])
+        results.append(parent2.generate_children(parent1)[0])
     # Hint: Call generate_children() on some individuals and fill up results.
     return results
 
