@@ -591,19 +591,20 @@ def generate_successors(population):
     # Tournament Selection
     winners = []
     random.shuffle(population)
-    for i in range(0, len(population) - 1):
-        player1 = population[i]
-        player2 = population[i+1]
+    for i in range(0, math.floor(len(population)/2) - 1):
+        player1 = population[i*2]
+        player2 = population[i*2+1]
         if player1._fitness > player2._fitness:
             winners.append(player1)
         else:
             winners.append(player2)
 
-    for child in range(0, len(winners) - 1):
-        parent1 = winners[child]
-        parent2 = winners[child + 1]
+    for j in range(0, math.floor(len(winners)/2) - 1):
+        parent1 = winners[j*2]
+        parent2 = winners[j*2 + 1]
         results.append(parent1.generate_children(parent2)[0])
-        results.append(parent2.generate_children(parent1)[0])
+        # results.append(parent2.generate_children(parent1)[0])
+    print("Successors: ", results)
     # Hint: Call generate_children() on some individuals and fill up results.
     return results
 
