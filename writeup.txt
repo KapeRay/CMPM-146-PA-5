@@ -10,8 +10,13 @@ to 1
 
 Mutate Grid
 -------------------------------
+Goes over every element of the grid and mutates each
 
+Has a certain chance of modifying each kind of block into another block
 
+Has least chance of modifying air and ground because those are important blocks to maintain in the level.
+
+Has around 1/1000 chance to modify in each succession
 
 Crossover For Generate Children
 -------------------------------

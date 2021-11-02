@@ -78,7 +78,7 @@ class Individual_Grid(object):
                 chance = random.randint(1,1000)
                 otherChance = random.randint(1, 100)
                 #changing empty space
-                if self.genome[y][x] == '-' and chance > 950:
+                if self.genome[y][x] == '-' and chance > 990:
                     if otherChance < 5:
                         genome[y][x] = 'X'
                     elif otherChance < 15:
