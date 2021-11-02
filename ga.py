@@ -603,16 +603,6 @@ def generate_successors(population):
         results.append(parent1.generate_children(parent2)[0])
         results.append(parent2.generate_children(parent1)[0])
         
-    """for x in range(0, rounds-1):
-        sample_size = 6
-        selection = random.sample(population, sample_size)
-        #shuffle based on fitness
-        for i in range(0, len(selection)):
-            # proportional selection based on fitness
-            randChance = random.random()
-            if randChance < probability*(1-probability)**i:
-                winners.append(selection[i])
-            pass"""
     return results
     
     # random.shuffle(population)

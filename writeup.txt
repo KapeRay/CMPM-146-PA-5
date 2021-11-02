@@ -89,6 +89,15 @@ This method gives each individual a chance to be selected
 
 Tournament Selection
 --------------------------------
+The selection will pick two members from the population at random and makes them go against each other
+depending on whose fitness is bigger, that one will be picked to generate children. 
+Note: Needed to be comment out since it crashed after a bit.
 
+==================================================================================================================================
+Favorite 2 levels:
 
+The first level: It is full of a lot of blocks that are floating around but is intersting since it can be beaten is just a maze
+the player must traverse to get to the goal.
+
+The second level: Has less stuff but need to make some jumps between blocks to be able move deeper into the level.
 
