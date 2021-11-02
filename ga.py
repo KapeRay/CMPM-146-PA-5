@@ -46,9 +46,8 @@ class Individual_Grid(object):
         # STUDENT Modify this, and possibly add more metrics.  You can replace this with whatever code you like.
         coefficients = dict(
             meaningfulJumpVariance=1,
-            meaningfulJumps=1,
             jumps=1,
-            negativeSpace=0.6,
+            negativeSpace=0.2,
             pathPercentage=0.5,
             emptyPercentage=0.6,
             linearity=-0.5,
@@ -79,7 +78,7 @@ class Individual_Grid(object):
                 chance = random.randint(1,1000)
                 otherChance = random.randint(1, 100)
                 #changing empty space
-                if self.genome[y][x] == '-' and chance > 999:
+                if self.genome[y][x] == '-' and chance > 950:
                     if otherChance < 5:
                         genome[y][x] = 'X'
                     elif otherChance < 15:
@@ -284,14 +283,15 @@ class Individual_Grid(object):
         
         point = []
         point1 = random.randint(left, right)
-        point2 = random.randint(left, right)
-        point3 = random.randint(left, right)
         point.append(point1)
-        point.append(point2)
-        point.append(point3)
+        point2 = random.randint(left, right)
+        point.append(point2)        
+        point3 = random.randint(left, right)
+        point.append(point3)        
         
+        point.sort()
         for y in range(height):
-            for x in range(width):
+            for x in range(left, right):
                 # choose the "Best" trait of each pair from left or right parents
                 #compare the two genomes and choose using multi point crossover
                 # from left to point1, new_genome stays the same and brother_genome takes other
@@ -581,10 +581,29 @@ Individual = Individual_Grid
 def generate_successors(population):
     winners = []
     rounds = 50
+    results = []
     contestants = []
     probability = 0.5
 
-    for x in range(0, rounds-1):
+    # roulette wheel selection
+    roulette_wheel = []
+    fitness_max = 0
+    for i in range(0, len(population)):
+        if population[i]._fitness > fitness_max:
+            fitness_max = population[i]._fitness
+    for i in range(0, len(population)):
+        spin = random.uniform(0, fitness_max)
+        for j in range(0, len(population)):
+                if population[j]._fitness >= spin:
+                    roulette_wheel.append(population[j])
+                    break
+    for child in range(0, len(roulette_wheel) - 1, 2):
+        parent1 = roulette_wheel[child]
+        parent2 = roulette_wheel[child + 1]
+        results.append(parent1.generate_children(parent2)[0])
+        results.append(parent2.generate_children(parent1)[0])
+        
+    """for x in range(0, rounds-1):
         sample_size = 6
         selection = random.sample(population, sample_size)
         #shuffle based on fitness
@@ -593,22 +612,9 @@ def generate_successors(population):
             randChance = random.random()
             if randChance < probability*(1-probability)**i:
                 winners.append(selection[i])
-            pass
-    return winners
-    #50% chance to do tournament or roulette wheel selection
-    # roulette wheel selection
-    #
-    # fitness_sum = 0
-    # for members in population:
-    #     fitness_sum += members._fitness
-    # while len(results) < len(population):
-    #     select = random.random() * fitness_sum
-    #     for parents in population:
-    #         select -= parents._fitness
-    #         if(select < 0):
-    #             children = parents.generate_children(parents)
-    #             results.append(children[0] or [1])
-    #             break
+            pass"""
+    return results
+    
     # random.shuffle(population)
     # for members in population:
 
