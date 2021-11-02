@@ -101,7 +101,7 @@ class Individual_Grid(object):
                         genome[y][x] = 'T'
                         continue
                 # Changing solid wall
-                elif self.genome[y][x] == 'X' and chance > 999:
+                elif self.genome[y][x] == 'X' and chance > 999 and y >= 15:
                     if otherChance < 5:
                         genome[y][x] = 'E'
                         continue
